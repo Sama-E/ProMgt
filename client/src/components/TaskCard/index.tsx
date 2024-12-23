@@ -28,9 +28,9 @@ const TaskCard = ({ task }: Props) => {
           </div>
         </div>
       )}
-      <p>
+      {/* <p>
         <strong>ID:</strong> {task.id}
-      </p>
+      </p> */}
       <p>
         <strong>Title:</strong> {task.title}
       </p>
