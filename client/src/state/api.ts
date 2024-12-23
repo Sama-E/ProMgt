@@ -202,6 +202,7 @@ export const {
     useGetTasksQuery,
     useCreateTaskMutation,
     useUpdateTaskStatusMutation,
+    useUpdateTaskPriorityMutation,
     useSearchQuery,
     useGetUsersQuery,
     useGetTeamsQuery,

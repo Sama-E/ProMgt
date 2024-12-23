@@ -4,6 +4,8 @@ import React, { useState } from 'react'
 
 // import ModalNewTask from '@/components/ModalNewTask';
 import ProjectHeader from '../ProjectHeader';
+import Board from '../BoardView';
+import List from '../ListView';
 
 type Props = {
     params: { id: string };
@@ -25,14 +27,14 @@ type Props = {
       <ProjectHeader activeTab={activeTab} setActiveTab={setActiveTab} />
 
       {/* Board */}
-      {/* {activeTab === "Board" && (
+      {activeTab === "Board" && (
         <Board id={id} setIsModalNewTaskOpen={setIsModalNewTaskOpen} />
-      )} */}
+      )}
 
       {/* List */}
-      {/* {activeTab === "List" && (
+      {activeTab === "List" && (
         <List id={id} setIsModalNewTaskOpen={setIsModalNewTaskOpen} />
-      )} */}
+      )}
 
       {/* Timeline */}
       {/* {activeTab === "Timeline" && (
