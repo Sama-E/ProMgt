@@ -7,6 +7,7 @@ import ProjectHeader from '../ProjectHeader';
 import Board from '../BoardView';
 import List from '../ListView';
 import Timeline from '../TimelineView';
+import Table from '../TableView';
 
 type Props = {
     params: { id: string };
@@ -43,9 +44,9 @@ type Props = {
       )}
 
       {/* Table */}
-      {/* {activeTab === "Table" && (
+      {activeTab === "Table" && (
         <Table id={id} setIsModalNewTaskOpen={setIsModalNewTaskOpen} />
-      )} */}
+      )}
     </div>
   )
 }

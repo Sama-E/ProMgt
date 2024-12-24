@@ -1,9 +1,9 @@
 import { Router } from "express";
 
-import { getTeams } from "../controllers/teamController";
+// import { getTeams } from "../controllers/teamController";
 
-const router = Router();
+// const router = Router();
 
-router.get("/", getTeams);
+// router.get("/", getTeams);
 
-export default router;
+// export default router;

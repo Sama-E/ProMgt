@@ -36,9 +36,7 @@ const ListView = ({ id, setIsModalNewTaskOpen }: Props) => {
           isSmallText
         />
       </div>
-      {/* <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-6"> */}
-        {/* {tasks?.map((task: Task) => <TaskCard key={task.id} task={task} />)} */}
-      <div className="mb-3 max-w-2xl rounded bg-white p-4 shadow dark:bg-dark-secondary dark:text-white ">
+      <div className="mb-3 min-w-m max-w-4xl rounded bg-white p-2 shadow dark:bg-dark-secondary dark:text-white ">
         <ul role="list" className="grid grid-cols-1 gap-4 divide-y divide-gray-100">
           {tasks?.map((task: Task) => <ListCard key={task.id} task={task} />)}
         </ul>
@@ -46,5 +44,6 @@ const ListView = ({ id, setIsModalNewTaskOpen }: Props) => {
     </div>
   )
 }
+
 
 export default ListView
