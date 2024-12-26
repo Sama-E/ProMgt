@@ -1,5 +1,6 @@
 import React from 'react'
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { format } from 'date-fns';
 
 import { useAppSelector } from '@/app/redux';
 import { useGetTasksQuery } from '@/state/api';
@@ -46,11 +47,15 @@ type Props = {
       field: "startDate",
       headerName: "Start Date",
       width: 130,
+      renderCell: (params) => 
+          format(new Date(params.value), 'MM.dd.yy')
     },
     {
       field: "dueDate",
       headerName: "Due Date",
       width: 130,
+      renderCell: (params) => 
+        format(new Date(params.value), 'MM.dd.yy')
     },
     {
       field: "author",

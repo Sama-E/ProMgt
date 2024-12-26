@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react'
 import { useAppSelector } from '@/app/redux';
 import { DisplayOption, Gantt, ViewMode } from "gantt-task-react"
 import "gantt-task-react/dist/index.css";
+// import { format } from 'date-fns';
 
 import { useGetTasksQuery } from '@/state/api';
 
@@ -39,6 +40,7 @@ const Timeline = ({ id, setIsModalNewTaskOpen }: Props) => {
       })) || []
     );
   }, [tasks]);
+  // console.log(tasks)
 
   const handleViewModeChange = (
     event: React.ChangeEvent<HTMLSelectElement>,

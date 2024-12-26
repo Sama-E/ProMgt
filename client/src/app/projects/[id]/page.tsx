@@ -18,6 +18,7 @@ type Props = {
     const [activeTab, setActiveTab] = useState("Board");
     const [isModalNewTaskOpen, setIsModalNewTaskOpen] = useState(false);
 
+
   return (
     <div>
         {/* <ModalNewTask
@@ -34,9 +35,9 @@ type Props = {
       )}
 
       {/* List */}
-      {activeTab === "List" && (
+      {/* {activeTab === "List" && (
         <List id={id} setIsModalNewTaskOpen={setIsModalNewTaskOpen} />
-      )}
+      )} */}
 
       {/* Timeline */}
       {activeTab === "Timeline" && (
