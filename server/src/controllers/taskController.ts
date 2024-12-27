@@ -112,7 +112,7 @@ export const updateTaskPriority = async (
     }
   };
 
-//Get Tasks by Project Author User or Project Assigned Users
+//Get Tasks by Signed-in User
 export const getUserTasks = async (
   req: Request,
   res: Response

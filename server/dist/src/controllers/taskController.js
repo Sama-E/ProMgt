@@ -104,7 +104,7 @@ const updateTaskPriority = (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.updateTaskPriority = updateTaskPriority;
-//Get Tasks by Project Author User or Project Assigned Users
+//Get Tasks by Signed-in User
 const getUserTasks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { userId } = req.params;
     try {
