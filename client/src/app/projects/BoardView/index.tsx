@@ -28,6 +28,7 @@ const BoardView = ({ id, setIsModalNewTaskOpen }: BoardProps) => {
     const moveTask = (taskId: number, toStatus: string) => {
         updateTaskStatus({ taskId, status: toStatus });
       };
+    //Not applied yet
     const movePriority = (taskId: number, toPriority: string) => {
         updateTaskPriority({ taskId, priority: toPriority });
     };

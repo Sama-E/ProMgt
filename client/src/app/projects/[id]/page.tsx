@@ -8,6 +8,7 @@ import Board from '../BoardView';
 import List from '../ListView';
 import Timeline from '../TimelineView';
 import Table from '../TableView';
+import ModalNewTask from '@/components/ModalNewTask';
 
 type Props = {
     params: { id: string };
@@ -21,11 +22,11 @@ type Props = {
 
   return (
     <div>
-        {/* <ModalNewTask
+        <ModalNewTask
             isOpen={isModalNewTaskOpen}
             onClose={() => setIsModalNewTaskOpen(false)}
             id={id}
-      /> */}
+      />
       {/* Project Header */}
       <ProjectHeader activeTab={activeTab} setActiveTab={setActiveTab} />
 

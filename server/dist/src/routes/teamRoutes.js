@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-// import { getTeams } from "../controllers/teamController";
-// const router = Router();
-// router.get("/", getTeams);
-// export default router;
+const express_1 = require("express");
+const teamController_1 = require("../controllers/teamController");
+const router = (0, express_1.Router)();
+router.get("/", teamController_1.getTeams);
+exports.default = router;
