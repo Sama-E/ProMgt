@@ -48,3 +48,29 @@ const createProject = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.createProject = createProject;
+//Get Projects by Signed-in User
+// export const getUserProjects = async (
+//   req: Request,
+//   res: Response
+// ): Promise<void> => {
+//   const { userId } = req.params;
+//   try {
+//     const projects = await prisma.project.findMany({
+//       where: {
+//         OR: [
+//           { authorUserId: Number(userId) },
+//           { assignedUserId: Number(userId) },
+//         ],
+//       },
+//       include: {
+//         author: true,
+//         assignee: true,
+//       },
+//     });
+//     res.json(tasks);
+//   } catch (error: any) {
+//     res
+//       .status(500)
+//       .json({ message: `Error retrieving user's tasks: ${error.message}` });
+//   }
+// };
