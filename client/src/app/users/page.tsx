@@ -31,7 +31,7 @@ const columns: GridColDef[] = [
             <div className="flex h-full w-full items-center justify-center">
                 <div className="h-9 w-9">
                 <Image
-                    src={`/${params.value}`}
+                    src={`/${params.row.profilePic}`}
                     // src={`https://pm-s3-images.s3.us-east-2.amazonaws.com/${params.value}`}
                     alt={params.row.username}
                     width={100}
@@ -43,7 +43,7 @@ const columns: GridColDef[] = [
         ),
     },
     { field: "username", headerName: "Name", width: 150 },
-    { field: "teamId", headerName: "Team", width: 150 },
+    { field: "teamName", headerName: "Team", width: 150 },
 ];
 
 const Users = () => {
@@ -53,6 +53,8 @@ const Users = () => {
   if (isLoading) return <div>Loading...</div>;
   if (isError || !users) return <div>Error fetching users</div>;
 
+  console.log(users)
+
   return (
     <div className="flex w-full flex-col p-8">
       <Header name="Users" />
@@ -60,7 +62,7 @@ const Users = () => {
         <DataGrid
           rows={users || []}
           columns={columns}
-          getRowId={(row) => row.userId}
+          getRowId={(row) => row.id}
           pagination
           slots={{
             toolbar: CustomToolbar,

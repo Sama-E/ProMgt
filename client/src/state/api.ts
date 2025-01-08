@@ -49,6 +49,7 @@ export interface Comment {
     text: string;
     taskId: number;
     userId: number;
+    user?: User;
 }
 
 export interface Attachment {
@@ -66,6 +67,7 @@ export interface User {
     profilePictureUrl?: string;
     cognitoId?: string;
     teamId?: number;
+    teamName?: string;
 }
 
 export interface Team {

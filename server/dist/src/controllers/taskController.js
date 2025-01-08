@@ -116,9 +116,27 @@ const getUserTasks = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 ],
             },
             include: {
-                author: true,
-                assignee: true,
-                comments: true,
+                // Include the 'author' (task creator) and 'assignee' (person assigned)
+                author: {
+                    select: {
+                        username: true, // Only select 'username' from the 'author' user
+                    },
+                },
+                assignee: {
+                    select: {
+                        username: true, // Only select 'username' from the 'assignee' user
+                    },
+                },
+                // Include comments with the username of the user who commented
+                comments: {
+                    include: {
+                        user: {
+                            select: {
+                                username: true, // Fetch the 'username' from the 'user' who created the comment
+                            },
+                        },
+                    },
+                },
             },
         });
         res.json(tasks);

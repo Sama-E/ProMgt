@@ -5,8 +5,24 @@ const prisma = new PrismaClient();
 
 export const getUsers = async (req: Request, res: Response): Promise<void> => {
   try {
-    const users = await prisma.user.findMany();
-    res.json(users);
+    const users = await prisma.user.findMany({
+      include: {
+        team: {
+          select: {
+            teamName: true, // Only select the 'name' field from the team
+          },
+        },
+      },
+    });
+    const usersWithTeamNames = users.map(user => ({
+      id: user.userId,
+      username: user.username,
+      teamName: user.team?.teamName, // Include the team name or `null` if no team exists
+      teamId: user.teamId,
+      profilePic: user.profilePictureUrl,
+    }));
+
+    res.json(usersWithTeamNames);
   } catch (error: any) {
     res
       .status(500)

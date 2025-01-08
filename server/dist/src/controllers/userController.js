@@ -14,8 +14,26 @@ const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const users = yield prisma.user.findMany();
-        res.json(users);
+        const users = yield prisma.user.findMany({
+            include: {
+                team: {
+                    select: {
+                        teamName: true, // Only select the 'name' field from the team
+                    },
+                },
+            },
+        });
+        const usersWithTeamNames = users.map(user => {
+            var _a;
+            return ({
+                id: user.userId,
+                username: user.username,
+                teamName: (_a = user.team) === null || _a === void 0 ? void 0 : _a.teamName, // Include the team name or `null` if no team exists
+                teamId: user.teamId,
+                profilePic: user.profilePictureUrl,
+            });
+        });
+        res.json(usersWithTeamNames);
     }
     catch (error) {
         res

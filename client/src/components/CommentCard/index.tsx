@@ -10,6 +10,7 @@ type Props = {
 
 
 const CommentCard = ({ comment }: Props) => {
+  console.log(comment.user?.username)
   return (
     <>
       <div className="flex mt-4">
@@ -25,7 +26,7 @@ const CommentCard = ({ comment }: Props) => {
         </div>
 
         <div className="ml-3">
-          <div className="font-medium">{comment.userId}</div>
+          <div className="font-medium">{comment.user?.username}</div>
           <div>Posted on 2023-10-02 14:30</div>
           <div className="mt-2">{comment.text}
           </div>
