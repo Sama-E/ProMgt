@@ -178,7 +178,6 @@ const Task = ({ task }: TaskProps) => {
     </div>
   );
 
-  console.log(task)
 
   return (
     <div

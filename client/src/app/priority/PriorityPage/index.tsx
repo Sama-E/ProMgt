@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import { format } from 'date-fns';
 
 import { useAppSelector } from '@/app/redux';
-import { Priority, Task, useGetTasksByUserQuery } from '@/state/api';
+import { Priority, Task, useGetTasksByUserQuery, Comment } from '@/state/api';
 import ModalNewTask from '@/components/ModalNewTask';
 import Header from '@/components/Header';
 import TaskCard from '@/components/TaskCard';

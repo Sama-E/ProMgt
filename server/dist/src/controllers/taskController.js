@@ -158,6 +158,7 @@ const getOneTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             },
             include: {
                 comments: true,
+                attachments: true,
             },
         });
         res.json(task);

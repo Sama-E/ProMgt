@@ -171,7 +171,7 @@ export const api = createApi({
                 { type: "Tasks", id: taskId },
             ],
         }),
-        //Create Comment for Task
+        //Create Comment
         createComment: build.mutation<Comment, Partial<Comment>>({
             query: (comment) => ({
                 url: "comments",
@@ -180,6 +180,24 @@ export const api = createApi({
             }),
             invalidatesTags: ["Comments"],
         }),
+        //Create Comment for One Task
+        // createComment: build.mutation<Comment, { taskId: number, text: string, userId: number, comment: Partial<Comment> }>({
+        //     query: ({ taskId, comment }) => ({
+        //       url: `tasks/${taskId}/comments`,
+        //       method: "POST",
+        //       body: comment,
+        //     }),
+        //     // Invalidate only the comments tag for the specific task
+        //     invalidatesTags: (result, error, { taskId }) => [{ type: 'Comments', id: taskId }],
+        //   }),          
+        //Get Comments for One Task
+        getCommentsForTask: build.query<Comment[], { taskId: number }>({
+            query: ({ taskId }) => `tasks/${taskId}/comments`,  // Endpoint to fetch comments for a specific task
+            providesTags: (result, error, { taskId }) => 
+              result ? [{ type: 'Comments', id: taskId }] : [], // Cache comments by taskId
+          }),
+          
+        
 
         //USERS
         //Get Users - Array
@@ -231,6 +249,7 @@ export const {
     useUpdateTaskStatusMutation,
     useUpdateTaskPriorityMutation,
     useCreateCommentMutation,
+    useGetCommentsForTaskQuery,
     useSearchQuery,
     useGetUsersQuery,
     useGetTeamsQuery,

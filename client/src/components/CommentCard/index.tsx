@@ -10,10 +10,10 @@ type Props = {
 
 
 const CommentCard = ({ comment }: Props) => {
-  console.log(comment.user?.username)
+
   return (
     <>
-      <div className="flex mt-4">
+      <div className="flex pt-3">
       {/* Comments */}
         <div className="flex h-12 w-12 items-center justify-center">
           <Image
@@ -21,12 +21,12 @@ const CommentCard = ({ comment }: Props) => {
             alt=""
             width={150}
             height={75}
-            className="h-full rounded-full object-cover"
+            className="h-full rounded-full object-cover visible xs:invisible"
           />
         </div>
 
         <div className="ml-3">
-          <div className="font-medium">{comment.user?.username}</div>
+          <div className="">{comment.user?.username}</div>
           <div>Posted on 2023-10-02 14:30</div>
           <div className="mt-2">{comment.text}
           </div>

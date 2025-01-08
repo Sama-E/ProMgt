@@ -171,6 +171,7 @@ export const getOneTask = async (
       },
       include: {
         comments: true,
+        attachments: true,
       },
     });
     res.json(task);
