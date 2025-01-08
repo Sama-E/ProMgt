@@ -98,11 +98,12 @@ model Attachment {
 }
 
 model Comment {
-  id     Int    @id @default(autoincrement())
-  text   String
-  taskId Int
-  userId Int
+  id                  Int    @id @default(autoincrement())
+  text                String
+  taskId              Int
+  commentAuthorUserId Int
+  createdAt           DateTime   @default(now())
 
-  task Task @relation(fields: [taskId], references: [id])
-  user User @relation(fields: [userId], references: [userId])
+  task          Task @relation(fields: [taskId], references: [id])
+  commentAuthor User @relation("CommentAuthor", fields: [commentAuthorUserId], references: [userId])
 }

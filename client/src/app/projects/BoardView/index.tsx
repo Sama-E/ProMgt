@@ -178,6 +178,8 @@ const Task = ({ task }: TaskProps) => {
     </div>
   );
 
+  console.log(task)
+
   return (
     <div
       ref={(instance) => {drag(instance);}}

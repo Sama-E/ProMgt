@@ -8,4 +8,5 @@ router.post("/", taskController_1.createTask);
 router.patch("/:taskId/status", taskController_1.updateTaskStatus);
 router.patch("/:taskId/priority", taskController_1.updateTaskPriority);
 router.get("/user/:userId", taskController_1.getUserTasks);
+router.get("/:taskId", taskController_1.getOneTask);
 exports.default = router;

@@ -10,7 +10,7 @@ type Props = {
 
 
 const TaskCardAlt = ({ task }: Props) => {
-
+  console.log(task)
   return (
     <div className="m-3 max-w-sm w-full border rounded shadow bg-white dark:bg-dark-secondary dark:text-white">
 

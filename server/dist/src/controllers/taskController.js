@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserTasks = exports.updateTaskPriority = exports.updateTaskStatus = exports.createTask = exports.getTasks = void 0;
+exports.getOneTask = exports.getUserTasks = exports.updateTaskPriority = exports.updateTaskStatus = exports.createTask = exports.getTasks = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 //Get Tasks of a Project
@@ -118,6 +118,7 @@ const getUserTasks = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             include: {
                 author: true,
                 assignee: true,
+                comments: true,
             },
         });
         res.json(tasks);
@@ -129,3 +130,24 @@ const getUserTasks = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.getUserTasks = getUserTasks;
+//Get One Task
+const getOneTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { taskId } = req.params;
+    try {
+        const task = yield prisma.task.findUnique({
+            where: {
+                id: Number(taskId)
+            },
+            include: {
+                comments: true,
+            },
+        });
+        res.json(task);
+    }
+    catch (error) {
+        res
+            .status(500)
+            .json({ message: `Error retrieving task: ${error.message}` });
+    }
+});
+exports.getOneTask = getOneTask;

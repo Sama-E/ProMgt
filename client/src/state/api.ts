@@ -44,6 +44,13 @@ export enum Priority {
     Backlog = "Backlog",
 }
 
+export interface Comment {
+    id: number;
+    text: string;
+    taskId: number;
+    userId: number;
+}
+
 export interface Attachment {
     id: number;
     fileURL: string;
@@ -87,7 +94,7 @@ export const api = createApi({
         //   },
     }),
     reducerPath: "api",
-    tagTypes: ["Projects", "Tasks", "Users", "Teams"],
+    tagTypes: ["Projects", "Tasks", "Users", "Teams", "Comments", "Task"],
     endpoints: (build) => ({
         
         //PROJECTS
@@ -123,6 +130,14 @@ export const api = createApi({
                 ? result.map(({ id }) => ({ type: "Tasks", id }))
                 : [{ type: "Tasks", id: userId }],
         }),
+        //Get One Task
+        getOneTask: build.query<Task, { taskId: number }>({
+            query: ({ taskId }) => `tasks/${taskId}`,
+            providesTags: (result, error, { taskId }) =>
+              result
+                ? [{ type: 'Task', id: taskId }]  // Cache the task by its ID
+                : [],  // If no result (error or empty), don't cache
+          }),
         //Create Task
         createTask: build.mutation<Task, Partial<Task>>({
             query: (task) => ({
@@ -153,6 +168,15 @@ export const api = createApi({
             invalidatesTags: (result, error, { taskId }) => [
                 { type: "Tasks", id: taskId },
             ],
+        }),
+        //Create Comment for Task
+        createComment: build.mutation<Comment, Partial<Comment>>({
+            query: (comment) => ({
+                url: "comments",
+                method: "POST",
+                body: comment,
+            }),
+            invalidatesTags: ["Comments"],
         }),
 
         //USERS
@@ -200,9 +224,11 @@ export const {
     useGetProjectsQuery,
     useCreateProjectMutation,
     useGetTasksQuery,
+    useGetOneTaskQuery,
     useCreateTaskMutation,
     useUpdateTaskStatusMutation,
     useUpdateTaskPriorityMutation,
+    useCreateCommentMutation,
     useSearchQuery,
     useGetUsersQuery,
     useGetTeamsQuery,

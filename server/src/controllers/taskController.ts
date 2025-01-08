@@ -129,6 +129,7 @@ export const getUserTasks = async (
       include: {
         author: true,
         assignee: true,
+        comments: true,
       },
     });
     res.json(tasks);
@@ -136,5 +137,28 @@ export const getUserTasks = async (
     res
       .status(500)
       .json({ message: `Error retrieving user's tasks: ${error.message}` });
+  }
+};
+
+//Get One Task
+export const getOneTask = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { taskId } = req.params;
+  try {
+    const task = await prisma.task.findUnique({
+      where: {
+        id: Number(taskId)
+      },
+      include: {
+        comments: true,
+      },
+    });
+    res.json(task);
+  } catch (error: any) {
+    res
+      .status(500)
+      .json({ message: `Error retrieving task: ${error.message}` });
   }
 };
