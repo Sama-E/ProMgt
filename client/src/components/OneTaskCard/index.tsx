@@ -61,7 +61,7 @@ const OneTaskCard = ({ task }: Props) => {
       </div>
       <section className="rounded-lg border-1 border-gray-600 p-3 my-4 w-full">
         <h3 className="text-md font-bold mb-1">Comments</h3>
-        {/* Comment Form */}
+        {/* Comment Form
         <form onSubmit={(e) => {
           e.preventDefault();
           handleSubmit();
@@ -87,7 +87,7 @@ const OneTaskCard = ({ task }: Props) => {
         </form>
 
         {isError && <p className="text-red-500 mt-2">Failed to submit comment. Please try again.</p>}
-        {isSuccess && <p className="text-green-500 mt-2">Comment added successfully!</p>}
+        {isSuccess && <p className="text-green-500 mt-2">Comment added successfully!</p>} */}
 
       <ul role="list" className="grid grid-cols-1 gap-4 divide-y divide-gray-100 ">
         {comments?.map((comment: Comment) => <CommentCard key={comment.id} comment={comment} />)}
