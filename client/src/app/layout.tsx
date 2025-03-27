@@ -1,5 +1,7 @@
+
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+
 import "./globals.css";
 import DashboardWrapper from "./DashboardWrapper";
 
@@ -10,11 +12,8 @@ export const metadata: Metadata = {
   description: "Imagine. List. Build.",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({children,}: Readonly<{children: React.ReactNode;}>) {
+  
   return (
     <html lang="en">
       <body className={inter.className}>

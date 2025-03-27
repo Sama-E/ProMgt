@@ -61,13 +61,13 @@ type Props = {
       field: "author",
       headerName: "Author",
       width: 150,
-      renderCell: (params) => params.value?.author || "Unknown",
+      renderCell: (params) => params.value?.username || "Unknown",
     },
     {
       field: "assignee",
       headerName: "Assignee",
       width: 150,
-      renderCell: (params) => params.value?.assignee || "Unassigned",
+      renderCell: (params) => params.value?.username || "Unassigned",
     },
   ];
 
@@ -81,6 +81,8 @@ type Props = {
   
     if (isLoading) return <div>Loading...</div>;
     if (error || !tasks) return <div>An error occurred while fetching tasks</div>;
+
+    // console.log(tasks)
 
   return (
     <div className="h-[540px] w-full px-4 pb-8 xl:px-6">

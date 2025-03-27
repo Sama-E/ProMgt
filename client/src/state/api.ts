@@ -63,6 +63,8 @@ export interface Attachment {
 export interface User {
     userId?: number;
     username: string;
+    firstName: string;
+    lastName: string;
     email: string;
     profilePictureUrl?: string;
     cognitoId?: string;

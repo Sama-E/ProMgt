@@ -1,0 +1,67 @@
+[
+    {
+      "id": 1,
+      "title": "Bug 1",
+      "description": "css flexbox overlap",
+      "status": "Work In Progress",
+      "priority": "Urgent",
+      "tags": "Design",
+      "startDate": "2023-01-10T00:00:00Z",
+      "dueDate": "2023-04-10T00:00:00Z",
+      "projectId": 1,
+      "authorUserId": 1,
+      "assignedUserId": 2
+    },
+    {
+        "id": 2,
+        "title": "Bug 2",
+        "description": "Axios issue",
+        "status": "To Do",
+        "priority": "High",
+        "tags": "Coding",
+        "startDate": "2023-01-15T00:00:00Z",
+        "dueDate": "2023-05-15T00:00:00Z",
+        "projectId": 2,
+        "authorUserId": 3,
+        "assignedUserId": 4
+      },
+      {
+        "id": 3,
+        "title": "Bug 3",
+        "description": "Login button not responsive",
+        "status": "Work In Progress",
+        "priority": "Urgent",
+        "tags": "Development",
+        "startDate": "2023-03-20T00:00:00Z",
+        "dueDate": "2023-09-20T00:00:00Z",
+        "projectId": 3,
+        "authorUserId": 5,
+        "assignedUserId": 6
+      },
+      {
+        "id": 4,
+        "title": "Bug 4",
+        "description": "Secure pages",
+        "status": "To Do",
+        "priority": "High",
+        "tags": "Planning",
+        "startDate": "2023-01-25T00:00:00Z",
+        "dueDate": "2023-06-25T00:00:00Z",
+        "projectId": 4,
+        "authorUserId": 7,
+        "assignedUserId": 8
+      },
+      {
+        "id": 5,
+        "title": "Bug 5",
+        "description": "Incorrect input validation",
+        "status": "Work In Progress",
+        "priority": "Urgent",
+        "tags": "Research",
+        "startDate": "2023-04-20T00:00:00Z",
+        "dueDate": "2023-10-20T00:00:00Z",
+        "projectId": 5,
+        "authorUserId": 9,
+        "assignedUserId": 10
+      }
+]

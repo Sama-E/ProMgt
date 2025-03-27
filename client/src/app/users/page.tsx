@@ -42,6 +42,8 @@ const columns: GridColDef[] = [
             </div>
         ),
     },
+    // { field: "firstName", headerName: "Name", width: 150 },
+    // { field: "lastName", headerName: "Name", width: 150 },
     { field: "username", headerName: "Name", width: 150 },
     { field: "teamName", headerName: "Team", width: 150 },
 ];
