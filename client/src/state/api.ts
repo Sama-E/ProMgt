@@ -29,6 +29,26 @@ export interface Task {
     attachments?: Attachment[];
 }
 
+export interface Bug {
+    id: number;
+    title: string;
+    description?: string;
+    status?: Status;
+    priority?: Priority;
+    tags?: string;
+    startDate?: string;
+    dueDate?: string;
+    points?: number;
+    projectId: number;
+    authorUserId?: number;
+    assignedUserId?: number;
+  
+    author?: User;
+    assignee?: User;
+    comments?: Comment[];
+    attachments?: Attachment[];
+}
+
 export enum Status {
     ToDo = "To Do",
     WorkInProgress = "Work In Progress",
@@ -48,6 +68,7 @@ export interface Comment {
     id: number;
     text: string;
     taskId: number;
+    bugId: number;
     userId: number;
     user?: User;
 }
@@ -57,6 +78,7 @@ export interface Attachment {
     fileURL: string;
     fileName: string;
     taskId: number;
+    bugId: number;
     uploadedById: number;
 }
 
@@ -81,6 +103,7 @@ export interface Team {
 
 export interface SearchResults {
     tasks?: Task[];
+    bugs?: Task[];
     projects?: Project[];
     users?: User[];
 }
@@ -98,7 +121,7 @@ export const api = createApi({
         //   },
     }),
     reducerPath: "api",
-    tagTypes: ["Projects", "Tasks", "Users", "Teams", "Comments", "Task"],
+    tagTypes: ["Projects", "Tasks", "Bugs","Users", "Teams", "Comments", "Task", "Bug"],
     endpoints: (build) => ({
         
         //PROJECTS
@@ -173,6 +196,65 @@ export const api = createApi({
                 { type: "Tasks", id: taskId },
             ],
         }),
+
+        //BUGS
+        //Get All Bugs - Array
+        getBugs: build.query<Bug[], { projectId: number }>({
+            query: ({ projectId }) => `bugs?projectId=${projectId}`,
+            providesTags: (result) =>
+              result
+                ? result.map(({ id }) => ({ type: "Bugs" as const, id }))
+                : [{ type: "Bugs" as const }],
+        }),
+        //Get Bugs by User - Array
+        getBugsByUser: build.query<Bug[], number>({
+            query: (userId) => `bugs/user/${userId}`,
+            providesTags: (result, error, userId) =>
+                result
+                ? result.map(({ id }) => ({ type: "Bugs", id }))
+                : [{ type: "Bugs", id: userId }],
+        }),
+        //Get One Bug
+        getOneBug: build.query<Bug, { bugId: number }>({
+            query: ({ bugId }) => `bugs/${bugId}`,
+            providesTags: (result, error, { bugId }) =>
+              result
+                ? [{ type: 'Bugs', id: bugId }]  // Cache the bugs by its ID
+                : [],  // If no result (error or empty), don't cache
+          }),
+        //Create Bug
+        createBug: build.mutation<Bug, Partial<Bug>>({
+            query: (bug) => ({
+                url: "bugs",
+                method: "POST",
+                body: bug,
+            }),
+            invalidatesTags: ["Bugs"],
+        }),
+        //Update Bug Status
+        updateBugStatus: build.mutation<Bug, { bugId: number; status: string }>({
+            query: ({ bugId, status }) => ({
+                url: `bugs/${bugId}/status`,
+                method: "PATCH",
+                body: { status },
+            }),
+            invalidatesTags: (result, error, { bugId }) => [
+                { type: "Bugs", id: bugId },
+            ],
+        }),
+        //Update Bug Priority
+        updateBugPriority: build.mutation<Bug, { bugId: number; priority: string }>({
+            query: ({ bugId, priority }) => ({
+                url: `bugs/${bugId}/priority`,
+                method: "PATCH",
+                body: { priority },
+            }),
+            invalidatesTags: (result, error, { bugId }) => [
+                { type: "Bugs", id: bugId },
+            ],
+        }),
+
+        //COMMENTS
         //Create Comment
         createComment: build.mutation<Comment, Partial<Comment>>({
             query: (comment) => ({
@@ -192,15 +274,22 @@ export const api = createApi({
         //     // Invalidate only the comments tag for the specific task
         //     invalidatesTags: (result, error, { taskId }) => [{ type: 'Comments', id: taskId }],
         //   }),          
+        
         //Get Comments for One Task
         getCommentsForTask: build.query<Comment[], { taskId: number }>({
             query: ({ taskId }) => `tasks/${taskId}/comments`,  // Endpoint to fetch comments for a specific task
             providesTags: (result, error, { taskId }) => 
               result ? [{ type: 'Comments', id: taskId }] : [], // Cache comments by taskId
           }),
+
+        //Get Comments for One Bug
+        getCommentsForBug: build.query<Comment[], { bugId: number }>({
+            query: ({ bugId }) => `tasks/${bugId}/comments`,  // Endpoint to fetch comments for a specific bug
+            providesTags: (result, error, { bugId }) => 
+              result ? [{ type: 'Comments', id: bugId }] : [], // Cache comments by bugId
+          }),
           
         
-
         //USERS
         //Get Users - Array
         getUsers: build.query<User[], void>({
@@ -250,11 +339,18 @@ export const {
     useCreateTaskMutation,
     useUpdateTaskStatusMutation,
     useUpdateTaskPriorityMutation,
+    useGetBugsQuery,
+    useGetOneBugQuery,
+    useCreateBugMutation,
+    useUpdateBugStatusMutation,
+    useUpdateBugPriorityMutation,
     useCreateCommentMutation,
     useGetCommentsForTaskQuery,
+    useGetCommentsForBugQuery,
     useSearchQuery,
     useGetUsersQuery,
     useGetTeamsQuery,
     useGetTasksByUserQuery,
+    useGetBugsByUserQuery,
     // useGetAuthUserQuery,
   } = api;

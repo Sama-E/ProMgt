@@ -9,6 +9,7 @@ import List from '../ListView';
 import Timeline from '../TimelineView';
 import Table from '../TableView';
 import ModalNewTask from '@/components/ModalNewTask';
+import ModalNewBug from '@/components/ModalNewBug';
 
 type Props = {
     params: { id: string };
@@ -18,15 +19,23 @@ type Props = {
     const { id } = params;
     const [activeTab, setActiveTab] = useState("Board");
     const [isModalNewTaskOpen, setIsModalNewTaskOpen] = useState(false);
+    const [isModalNewBugOpen, setIsModalNewBugOpen] = useState(false);
+
 
 
   return (
     <div>
-        <ModalNewTask
-            isOpen={isModalNewTaskOpen}
-            onClose={() => setIsModalNewTaskOpen(false)}
-            id={id}
+      <ModalNewTask
+          isOpen={isModalNewTaskOpen}
+          onClose={() => setIsModalNewTaskOpen(false)}
+          id={id}
       />
+
+      {/* <ModalNewBug
+          isOpen={isModalNewBugOpen}
+          onClose={() => setIsModalNewBugOpen(false)}
+          id={id}
+      /> */}
       {/* Project Header */}
       <ProjectHeader activeTab={activeTab} setActiveTab={setActiveTab} />
 
@@ -45,9 +54,14 @@ type Props = {
         <Timeline id={id} setIsModalNewTaskOpen={setIsModalNewTaskOpen} />
       )}
 
-      {/* Table */}
-      {activeTab === "Table" && (
+      {/* Task Table */}
+      {/* {activeTab === "Table" && (
         <Table id={id} setIsModalNewTaskOpen={setIsModalNewTaskOpen} />
+      )} */}
+
+      {/* Bugs Table */}
+      {activeTab === "Table" && (
+        <Table id={id} setIsModalNewBugOpen={setIsModalNewBugOpen} />
       )}
     </div>
   )

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { format } from "date-fns";
 
-import { Task, Comment, useCreateCommentMutation } from '@/state/api';
+import { Task, Bug, Comment, useCreateCommentMutation } from '@/state/api';
 import Modal from '../Modal';
 
 type Props = {
@@ -14,22 +14,23 @@ const ModalNewComment = ({ isOpen, onClose, id = null }: Props) => {
   const [createComment, { isLoading }] = useCreateCommentMutation();
   const [text, setText] = useState("");
   const [taskId, setTaskId] = useState("");
+  const [bugId, setBugId] = useState("");
   const [userId, setUserId] = useState("");
 
-  console.log(taskId)
 
   const handleSubmit = async () => {
-    // if (!text || !userId || !(id !== null || taskId)) return;
+    // if (!text || !userId || !(id !== null || taskId) || !(id !== null || bugId)) return;
 
     await createComment({
       text,
       taskId: Number(taskId),
+      bugId: Number(bugId),
       userId: 1, 
     });
   };
 
   const isFormValid = () => {
-    return text && userId && !(id !== null || taskId);
+    return text && userId && !(id !== null || taskId || bugId);
   };
 
   const selectStyles =

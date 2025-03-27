@@ -1,23 +1,23 @@
 import React, { useState } from 'react'
 import { format } from "date-fns";
 
-import { Task, Comment, useCreateCommentMutation, useGetCommentsForTaskQuery } from '@/state/api';
+import { Bug, Comment, useCreateCommentMutation, useGetCommentsForBugQuery } from '@/state/api';
 import Image from 'next/image';
 import CommentCard from '../CommentCard';
 
 type Props = {
-  task: Task;
+  bug: Bug;
   // comment: Comment;
   };
 
-const OneTaskCard = ({ task }: Props) => {
+const OneBugCard = ({ bug }: Props) => {
   const [newComment, setNewComment] = useState<string>('');  // Local state for the comment input
   const [createComment, { isLoading, isError, isSuccess, error }] = useCreateCommentMutation(); // Hook for creating a comment
   const [text, setText] = useState("");
-  // const { data: comments, isLoading: commentsLoading, error: commentsError } = useGetCommentsForTaskQuery({ taskId });
+  // const { data: comments, isLoading: commentsLoading, error: commentsError } = useGetCommentsForbugQuery({ bugId });
 
-  const comments = task.comments;
-  const taskId = task.id;
+  const comments = bug.comments;
+  const bugId = bug.id;
 
   // Handle comment submission
   const handleSubmit = async () => {
@@ -27,7 +27,7 @@ const OneTaskCard = ({ task }: Props) => {
       // Submit the new comment
       await createComment({
         text, 
-        taskId,
+        bugId,
         userId: 1
       });
       setNewComment('');  // Clear the textarea after submission
@@ -38,26 +38,26 @@ const OneTaskCard = ({ task }: Props) => {
 
   return (
     <div className="max-w-xl rounded overflow-hidden shadow-lg bg-white">
-      {task.attachments && task.attachments.length > 0 && (
+      {bug.attachments && bug.attachments.length > 0 && (
         <Image
-          src={`/${task.attachments[0].fileURL}`}
-          // src={`https://pm-s3-images.s3.us-east-2.amazonaws.com/${task.attachments[0].fileURL}`}
-          alt={task.attachments[0].fileName}
+          src={`/${bug.attachments[0].fileURL}`}
+          // src={`https://pm-s3-images.s3.us-east-2.amazonaws.com/${bug.attachments[0].fileURL}`}
+          alt={bug.attachments[0].fileName}
           width={200}
           height={100}
           className="h-auto w-full rounded-t-md"
         />
       )}
       <div className="px-6 py-4">
-          <div className="font-bold text-xl mb-2">{task.title}</div>
+          <div className="font-bold text-xl mb-2">{bug.title}</div>
           <p className="text-gray-700 text-base">
-          {task.description || "No description provided"}
+          {bug.description || "No description provided"}
           </p>
       </div>
       <div className="px-6 pt-4 pb-2">
-          <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{task.priority}</span>
-          <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{task.status}</span>
-          <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{task.tags}</span>
+          <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{bug.priority}</span>
+          <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{bug.status}</span>
+          <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{bug.tags}</span>
       </div>
       <section className="rounded-lg border-1 border-gray-600 p-3 my-4 w-full">
         <h3 className="text-md font-bold mb-1">Comments</h3>
@@ -97,4 +97,4 @@ const OneTaskCard = ({ task }: Props) => {
   )
 }
 
-export default OneTaskCard
+export default OneBugCard

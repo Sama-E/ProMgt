@@ -3,13 +3,13 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { format } from 'date-fns';
 
 import { useAppSelector } from '@/app/redux';
-import { useGetTasksQuery } from '@/state/api';
+import { useGetBugsQuery } from '@/state/api';
 import Header from '@/components/Header';
 import { dataGridClassNames, dataGridSxStyles } from '@/lib/utils';
 
 type Props = {
     id: string;
-    setIsModalNewTaskOpen: (isOpen: boolean) => void;
+    setIsModalNewBugOpen: (isOpen: boolean) => void;
   };
   
   const columns: GridColDef[] = [
@@ -71,18 +71,18 @@ type Props = {
     },
   ];
 
-  const TableView = ({ id, setIsModalNewTaskOpen }: Props) => {
+  const TableView = ({ id, setIsModalNewBugOpen }: Props) => {
     const isDarkMode = useAppSelector((state) => state.global.isDarkMode);
     const {
-      data: tasks,
+      data: bugs,
       error,
       isLoading,
-    } = useGetTasksQuery({ projectId: Number(id) });
+    } = useGetBugsQuery({ projectId: Number(id) });
   
     if (isLoading) return <div>Loading...</div>;
-    if (error || !tasks) return <div>An error occurred while fetching tasks</div>;
+    if (error || !bugs) return <div>An error occurred while fetching bugs</div>;
 
-    // console.log(tasks)
+    // console.log(bugs)
 
   return (
     <div className="h-[540px] w-full px-4 pb-8 xl:px-6">
@@ -92,16 +92,16 @@ type Props = {
           buttonComponent={
             <button
               className="flex items-center rounded bg-blue-primary px-3 py-2 text-white hover:bg-blue-600"
-              onClick={() => setIsModalNewTaskOpen(true)}
+              onClick={() => setIsModalNewBugOpen(true)}
             >
-              Add Task
+              Add Bug
             </button>
           }
           isSmallText
         />
       </div>
       <DataGrid
-        rows={tasks || []}
+        rows={bugs || []}
         columns={columns}
         className={dataGridClassNames}
         sx={dataGridSxStyles(isDarkMode)}
