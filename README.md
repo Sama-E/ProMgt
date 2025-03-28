@@ -3,9 +3,13 @@ Welcome to the Project Management App repository! This powerful app is built wit
 
 ##  Key Features:
 **Authentication**: Enjoy secure login and signup via Amazon Incognito for user authentication.
+
 **CRUD Operations**: Effortlessly create, read, update, and delete projects, tasks, and bugs.
+
 **Responsive Design**: Optimized for mobile devices with TailwindCSS, ensuring a smooth experience on all screen sizes.
+
 **API Integration**: Built with Express.js to handle API requests, and Prisma ORM to interact with PostgreSQL for data storage.
+
 **Full-Stack Application**: Leveraging Node.js for the back-end and React for the front-end.
 
 ##  Tech Stack:
