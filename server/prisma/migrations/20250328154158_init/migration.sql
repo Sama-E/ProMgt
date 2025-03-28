@@ -3,6 +3,8 @@ CREATE TABLE "User" (
     "userId" SERIAL NOT NULL,
     "cognitoId" TEXT NOT NULL,
     "username" TEXT NOT NULL,
+    "firstName" TEXT NOT NULL,
+    "lastName" TEXT NOT NULL,
     "profilePictureUrl" TEXT,
     "teamId" INTEGER,
 
@@ -67,11 +69,39 @@ CREATE TABLE "TaskAssignment" (
 );
 
 -- CreateTable
+CREATE TABLE "Bug" (
+    "id" SERIAL NOT NULL,
+    "title" TEXT NOT NULL,
+    "description" TEXT,
+    "status" TEXT,
+    "priority" TEXT,
+    "tags" TEXT,
+    "startDate" TIMESTAMP(3),
+    "dueDate" TIMESTAMP(3),
+    "points" INTEGER,
+    "projectId" INTEGER NOT NULL,
+    "authorUserId" INTEGER NOT NULL,
+    "assignedUserId" INTEGER,
+
+    CONSTRAINT "Bug_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "BugAssignment" (
+    "id" SERIAL NOT NULL,
+    "userId" INTEGER NOT NULL,
+    "bugId" INTEGER NOT NULL,
+
+    CONSTRAINT "BugAssignment_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "Attachment" (
     "id" SERIAL NOT NULL,
     "fileURL" TEXT NOT NULL,
     "fileName" TEXT,
     "taskId" INTEGER NOT NULL,
+    "bugId" INTEGER NOT NULL,
     "uploadedById" INTEGER NOT NULL,
 
     CONSTRAINT "Attachment_pkey" PRIMARY KEY ("id")
@@ -82,7 +112,9 @@ CREATE TABLE "Comment" (
     "id" SERIAL NOT NULL,
     "text" TEXT NOT NULL,
     "taskId" INTEGER NOT NULL,
-    "userId" INTEGER NOT NULL,
+    "bugId" INTEGER NOT NULL,
+    "authorUserId" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Comment_pkey" PRIMARY KEY ("id")
 );
@@ -118,7 +150,25 @@ ALTER TABLE "TaskAssignment" ADD CONSTRAINT "TaskAssignment_userId_fkey" FOREIGN
 ALTER TABLE "TaskAssignment" ADD CONSTRAINT "TaskAssignment_taskId_fkey" FOREIGN KEY ("taskId") REFERENCES "Task"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "Bug" ADD CONSTRAINT "Bug_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Bug" ADD CONSTRAINT "Bug_authorUserId_fkey" FOREIGN KEY ("authorUserId") REFERENCES "User"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Bug" ADD CONSTRAINT "Bug_assignedUserId_fkey" FOREIGN KEY ("assignedUserId") REFERENCES "User"("userId") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "BugAssignment" ADD CONSTRAINT "BugAssignment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "BugAssignment" ADD CONSTRAINT "BugAssignment_bugId_fkey" FOREIGN KEY ("bugId") REFERENCES "Bug"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Attachment" ADD CONSTRAINT "Attachment_taskId_fkey" FOREIGN KEY ("taskId") REFERENCES "Task"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Attachment" ADD CONSTRAINT "Attachment_bugId_fkey" FOREIGN KEY ("bugId") REFERENCES "Bug"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Attachment" ADD CONSTRAINT "Attachment_uploadedById_fkey" FOREIGN KEY ("uploadedById") REFERENCES "User"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -127,4 +177,7 @@ ALTER TABLE "Attachment" ADD CONSTRAINT "Attachment_uploadedById_fkey" FOREIGN K
 ALTER TABLE "Comment" ADD CONSTRAINT "Comment_taskId_fkey" FOREIGN KEY ("taskId") REFERENCES "Task"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Comment" ADD CONSTRAINT "Comment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Comment" ADD CONSTRAINT "Comment_bugId_fkey" FOREIGN KEY ("bugId") REFERENCES "Bug"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Comment" ADD CONSTRAINT "Comment_authorUserId_fkey" FOREIGN KEY ("authorUserId") REFERENCES "User"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;

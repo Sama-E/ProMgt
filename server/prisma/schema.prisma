@@ -22,15 +22,15 @@ model User {
   profilePictureUrl String?
   teamId            Int?
 
-  authoredTasks   Task[]           @relation("TaskAuthor")
-  assignedTasks   Task[]           @relation("TaskAssignee")
-  taskAssignments TaskAssignment[]
-  authoredBugs    Bug[]           @relation("BugAuthor")
-  assignedBugs    Bug[]           @relation("BugAssignee")
-  bugAssignments  BugAssignment[]
-  attachments     Attachment[]
-  comments        Comment[]
-  team            Team?            @relation(fields: [teamId], references: [id])
+  authoredTasks     Task[]           @relation("TaskAuthor")
+  assignedTasks     Task[]           @relation("TaskAssignee")
+  taskAssignments   TaskAssignment[]
+  authoredBugs      Bug[]            @relation("BugAuthor")
+  assignedBugs      Bug[]            @relation("BugAssignee")
+  bugAssignments    BugAssignment[]
+  attachments       Attachment[]
+  authoredComments  Comment[]        @relation("CommentAuthor")
+  team              Team?            @relation(fields: [teamId], references: [id])
 }
 
 model Team {
@@ -141,10 +141,10 @@ model Comment {
   text                String
   taskId              Int
   bugId               Int
-  commentAuthorUserId Int
+  authorUserId        Int
   createdAt           DateTime   @default(now())
 
-  task          Task @relation(fields: [taskId], references: [id])
-  bug           Bug @relation(fields: [bugId], references: [id])
-  commentAuthor User @relation("CommentAuthor", fields: [commentAuthorUserId], references: [userId])
+  task                Task        @relation(fields: [taskId], references: [id])
+  bug                 Bug         @relation(fields: [bugId], references: [id])
+  author              User        @relation("CommentAuthor", fields: [authorUserId], references: [userId])
 }

@@ -17,6 +17,8 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
     const usersWithTeamNames = users.map(user => ({
       id: user.userId,
       username: user.username,
+      firstName: user.firstName,
+      lastName: user.lastName,
       teamName: user.team?.teamName, // Include the team name or `null` if no team exists
       teamId: user.teamId,
       profilePic: user.profilePictureUrl,
@@ -51,6 +53,8 @@ export const postUser = async (req: Request, res: Response) => {
   try {
     const {
       username,
+      firstName,
+      lastName,
       cognitoId,
       profilePictureUrl = "i1.jpg",
       teamId = 1,
@@ -58,6 +62,8 @@ export const postUser = async (req: Request, res: Response) => {
     const newUser = await prisma.user.create({
       data: {
         username,
+        firstName,
+        lastName,
         cognitoId,
         profilePictureUrl,
         teamId,

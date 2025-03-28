@@ -3,11 +3,11 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-//Get Tasks of a Project
-export const getTasks = async (req: Request, res: Response): Promise<void> => {
+//Get Bugs of a Project
+export const getBugs = async (req: Request, res: Response): Promise<void> => {
   const { projectId } = req.query;
   try {
-    const tasks = await prisma.task.findMany({
+    const bugs = await prisma.bug.findMany({
       where: {
         projectId: Number(projectId),
       },
@@ -18,16 +18,16 @@ export const getTasks = async (req: Request, res: Response): Promise<void> => {
         attachments: true,
       },
     });
-    res.json(tasks);
+    res.json(bugs);
   } catch (error: any) {
     res
       .status(500)
-      .json({ message: `Error retrieving tasks: ${error.message}` });
+      .json({ message: `Error retrieving bugs: ${error.message}` });
   }
 };
 
-//Create a Task for a Project with Project Author User and Assigned Project Users
-export const createTask = async (
+//Create a Bug for a Project with Project Author User and Assigned Project Users
+export const createBug = async (
   req: Request,
   res: Response
 ): Promise<void> => {
@@ -45,7 +45,7 @@ export const createTask = async (
     assignedUserId,
   } = req.body;
   try {
-    const newTask = await prisma.task.create({
+    const newBug = await prisma.bug.create({
       data: {
         title,
         description,
@@ -60,66 +60,66 @@ export const createTask = async (
         assignedUserId,
       },
     });
-    res.status(201).json(newTask);
+    res.status(201).json(newBug);
   } catch (error: any) {
     res
       .status(500)
-      .json({ message: `Error creating a task: ${error.message}` });
+      .json({ message: `Error creating a bug: ${error.message}` });
   }
 };
 
-//Update Task Status
-export const updateTaskStatus = async (
+//Update Bug Status
+export const updateBugStatus = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { taskId } = req.params;
+  const { bugId } = req.params;
   const { status } = req.body;
   try {
-    const updatedTask = await prisma.task.update({
+    const updatedBug = await prisma.bug.update({
       where: {
-        id: Number(taskId),
+        id: Number(bugId),
       },
       data: {
         status: status,
       },
     });
-    res.json(updatedTask);
+    res.json(updatedBug);
   } catch (error: any) {
-    res.status(500).json({ message: `Error updating task: ${error.message}` });
+    res.status(500).json({ message: `Error updating bug: ${error.message}` });
   }
 };
 
-//Update Task Priority
-export const updateTaskPriority = async (
+//Update Bug Priority
+export const updateBugPriority = async (
     req: Request,
     res: Response
   ): Promise<void> => {
-    const { taskId } = req.params;
+    const { bugId } = req.params;
     const { priority } = req.body;
     try {
-      const updatedTask = await prisma.task.update({
+      const updatedBug = await prisma.bug.update({
         where: {
-          id: Number(taskId),
+          id: Number(bugId),
         },
         data: {
           priority: priority,
         },
       });
-      res.json(updatedTask);
+      res.json(updatedBug);
     } catch (error: any) {
-      res.status(500).json({ message: `Error updating task: ${error.message}` });
+      res.status(500).json({ message: `Error updating bug: ${error.message}` });
     }
   };
 
-//Get Tasks by Signed-in User
-export const getUserTasks = async (
+//Get Bugs by Signed-in User
+export const getUserBugs = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   const { userId } = req.params;
   try {
-    const tasks = await prisma.task.findMany({
+    const bugs = await prisma.bug.findMany({
       where: {
         OR: [
           { authorUserId: Number(userId) },
@@ -127,7 +127,7 @@ export const getUserTasks = async (
         ],
       },
       include: {
-        // Include the 'author' (task creator) and 'assignee' (person assigned)
+        // Include the 'author' (Bug creator) and 'assignee' (person assigned)
         author: {
           select: {
             username: true, // Only select 'username' from the 'author' user
@@ -156,34 +156,34 @@ export const getUserTasks = async (
         },
       },
     });
-    res.json(tasks);
+    res.json(bugs);
   } catch (error: any) {
     res
       .status(500)
-      .json({ message: `Error retrieving user's tasks: ${error.message}` });
+      .json({ message: `Error retrieving user's bugs: ${error.message}` });
   }
 };
 
-//Get One Task
-export const getOneTask = async (
+//Get One Bug
+export const getOneBug = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { taskId } = req.params;
+  const { bugId } = req.params;
   try {
-    const task = await prisma.task.findUnique({
+    const bug = await prisma.bug.findUnique({
       where: {
-        id: Number(taskId)
+        id: Number(bugId)
       },
       include: {
         comments: true,
         attachments: true,
       },
     });
-    res.json(task);
+    res.json(bug);
   } catch (error: any) {
     res
       .status(500)
-      .json({ message: `Error retrieving task: ${error.message}` });
+      .json({ message: `Error retrieving bug: ${error.message}` });
   }
 };

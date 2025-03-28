@@ -3,7 +3,8 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-//Get Comments of a Task
+// TASKS or BUGS COMMENTS
+//Get Comments
 export const getComments = async (req: Request, res: Response): Promise<void> => {
   const { taskId } = req.query;
   try {
@@ -11,6 +12,9 @@ export const getComments = async (req: Request, res: Response): Promise<void> =>
       where: {
         taskId: Number(taskId),
       },
+      // include: {
+      //   author: Number(authorUserId),
+      // },
     });
     res.json(comments);
   } catch (error: any) {
@@ -28,14 +32,16 @@ export const createComment = async (
     const {
       text,
       taskId,
-      userId,
+      bugId,
+      authorUserId,
     } = req.body;
     try {
       const newComment = await prisma.comment.create({
         data: {
           text,
           taskId,
-          userId,
+          bugId,
+          authorUserId,
         },
       });
       res.status(201).json(newComment);
@@ -45,6 +51,7 @@ export const createComment = async (
         .json({ message: `Error creating a comment: ${error.message}` });
     }
   };
+
 
   //Get One Comment
   export const getOneComment = async (
@@ -57,13 +64,15 @@ export const createComment = async (
         where: {
           id: Number(commentId)
         },
-        include: {
-          user: { // Include the associated user data
-            select: {
-              username: true, // Only select the username
-            },
-          },
-        },
+        // include: {
+        //   user: { // Include the associated user data
+        //     select: {
+        //       username: true, // Only select the username
+        //       firstName: true,
+        //       lastName: true,
+        //     },
+        //   },
+        // },
       });
       if (!comment) {
         res.status(404).json({ message: "Comment not found" });
@@ -71,11 +80,12 @@ export const createComment = async (
       }
   
       // You can now access comment.user.username
-      res.json({
-        id: comment.id,
-        text: comment.text,
-        username: comment.user?.username, // Access username from the user relation
-      });
+      // res.json({
+      //   id: comment.id,
+        // text: comment.text,
+        // username: comment.user?.username, // Access username from the user relation
+      // });
+      res.json(comment)
     } catch (error: any) {
       res
         .status(500)

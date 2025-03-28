@@ -28,6 +28,8 @@ const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             return ({
                 id: user.userId,
                 username: user.username,
+                firstName: user.firstName,
+                lastName: user.lastName,
                 teamName: (_a = user.team) === null || _a === void 0 ? void 0 : _a.teamName, // Include the team name or `null` if no team exists
                 teamId: user.teamId,
                 profilePic: user.profilePictureUrl,
@@ -61,10 +63,12 @@ const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.getUser = getUser;
 const postUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { username, cognitoId, profilePictureUrl = "i1.jpg", teamId = 1, } = req.body;
+        const { username, firstName, lastName, cognitoId, profilePictureUrl = "i1.jpg", teamId = 1, } = req.body;
         const newUser = yield prisma.user.create({
             data: {
                 username,
+                firstName,
+                lastName,
                 cognitoId,
                 profilePictureUrl,
                 teamId,

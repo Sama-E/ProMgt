@@ -9,14 +9,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getOneTask = exports.getUserTasks = exports.updateTaskPriority = exports.updateTaskStatus = exports.createTask = exports.getTasks = void 0;
+exports.getOneBug = exports.getUserBugs = exports.updateBugPriority = exports.updateBugStatus = exports.createBug = exports.getBugs = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
-//Get Tasks of a Project
-const getTasks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+//Get Bugs of a Project
+const getBugs = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { projectId } = req.query;
     try {
-        const tasks = yield prisma.task.findMany({
+        const bugs = yield prisma.bug.findMany({
             where: {
                 projectId: Number(projectId),
             },
@@ -27,20 +27,20 @@ const getTasks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 attachments: true,
             },
         });
-        res.json(tasks);
+        res.json(bugs);
     }
     catch (error) {
         res
             .status(500)
-            .json({ message: `Error retrieving tasks: ${error.message}` });
+            .json({ message: `Error retrieving bugs: ${error.message}` });
     }
 });
-exports.getTasks = getTasks;
-//Create a Task for a Project with Project Author User and Assigned Project Users
-const createTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getBugs = getBugs;
+//Create a Bug for a Project with Project Author User and Assigned Project Users
+const createBug = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { title, description, status, priority, tags, startDate, dueDate, points, projectId, authorUserId, assignedUserId, } = req.body;
     try {
-        const newTask = yield prisma.task.create({
+        const newBug = yield prisma.bug.create({
             data: {
                 title,
                 description,
@@ -55,60 +55,60 @@ const createTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 assignedUserId,
             },
         });
-        res.status(201).json(newTask);
+        res.status(201).json(newBug);
     }
     catch (error) {
         res
             .status(500)
-            .json({ message: `Error creating a task: ${error.message}` });
+            .json({ message: `Error creating a bug: ${error.message}` });
     }
 });
-exports.createTask = createTask;
-//Update Task Status
-const updateTaskStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { taskId } = req.params;
+exports.createBug = createBug;
+//Update Bug Status
+const updateBugStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { bugId } = req.params;
     const { status } = req.body;
     try {
-        const updatedTask = yield prisma.task.update({
+        const updatedBug = yield prisma.bug.update({
             where: {
-                id: Number(taskId),
+                id: Number(bugId),
             },
             data: {
                 status: status,
             },
         });
-        res.json(updatedTask);
+        res.json(updatedBug);
     }
     catch (error) {
-        res.status(500).json({ message: `Error updating task: ${error.message}` });
+        res.status(500).json({ message: `Error updating bug: ${error.message}` });
     }
 });
-exports.updateTaskStatus = updateTaskStatus;
-//Update Task Priority
-const updateTaskPriority = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { taskId } = req.params;
+exports.updateBugStatus = updateBugStatus;
+//Update Bug Priority
+const updateBugPriority = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { bugId } = req.params;
     const { priority } = req.body;
     try {
-        const updatedTask = yield prisma.task.update({
+        const updatedBug = yield prisma.bug.update({
             where: {
-                id: Number(taskId),
+                id: Number(bugId),
             },
             data: {
                 priority: priority,
             },
         });
-        res.json(updatedTask);
+        res.json(updatedBug);
     }
     catch (error) {
-        res.status(500).json({ message: `Error updating task: ${error.message}` });
+        res.status(500).json({ message: `Error updating bug: ${error.message}` });
     }
 });
-exports.updateTaskPriority = updateTaskPriority;
-//Get Tasks by Signed-in User
-const getUserTasks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.updateBugPriority = updateBugPriority;
+//Get Bugs by Signed-in User
+const getUserBugs = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { userId } = req.params;
     try {
-        const tasks = yield prisma.task.findMany({
+        const bugs = yield prisma.bug.findMany({
             where: {
                 OR: [
                     { authorUserId: Number(userId) },
@@ -116,7 +116,7 @@ const getUserTasks = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 ],
             },
             include: {
-                // Include the 'author' (task creator) and 'assignee' (person assigned)
+                // Include the 'author' (Bug creator) and 'assignee' (person assigned)
                 author: {
                     select: {
                         username: true, // Only select 'username' from the 'author' user
@@ -145,34 +145,34 @@ const getUserTasks = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 },
             },
         });
-        res.json(tasks);
+        res.json(bugs);
     }
     catch (error) {
         res
             .status(500)
-            .json({ message: `Error retrieving user's tasks: ${error.message}` });
+            .json({ message: `Error retrieving user's bugs: ${error.message}` });
     }
 });
-exports.getUserTasks = getUserTasks;
-//Get One Task
-const getOneTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { taskId } = req.params;
+exports.getUserBugs = getUserBugs;
+//Get One Bug
+const getOneBug = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { bugId } = req.params;
     try {
-        const task = yield prisma.task.findUnique({
+        const bug = yield prisma.bug.findUnique({
             where: {
-                id: Number(taskId)
+                id: Number(bugId)
             },
             include: {
                 comments: true,
                 attachments: true,
             },
         });
-        res.json(task);
+        res.json(bug);
     }
     catch (error) {
         res
             .status(500)
-            .json({ message: `Error retrieving task: ${error.message}` });
+            .json({ message: `Error retrieving bug: ${error.message}` });
     }
 });
-exports.getOneTask = getOneTask;
+exports.getOneBug = getOneBug;

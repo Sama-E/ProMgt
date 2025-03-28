@@ -15,6 +15,15 @@ export const search = async (req: Request, res: Response): Promise<void> => {
       },
     });
 
+    const bugs = await prisma.bug.findMany({
+      where: {
+        OR: [
+          { title: { contains: query as string } },
+          { description: { contains: query as string } },
+        ],
+      },
+    });
+
     const projects = await prisma.project.findMany({
       where: {
         OR: [
@@ -29,7 +38,7 @@ export const search = async (req: Request, res: Response): Promise<void> => {
         OR: [{ username: { contains: query as string } }],
       },
     });
-    res.json({ tasks, projects, users });
+    res.json({ tasks, bugs, projects, users });
   } catch (error: any) {
     res
       .status(500)

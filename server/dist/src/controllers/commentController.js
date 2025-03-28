@@ -12,7 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getOneComment = exports.createComment = exports.getComments = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
-//Get Comments of a Task
+// TASKS or BUGS COMMENTS
+//Get Comments
 const getComments = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { taskId } = req.query;
     try {
@@ -20,6 +21,9 @@ const getComments = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             where: {
                 taskId: Number(taskId),
             },
+            // include: {
+            //   author: Number(authorUserId),
+            // },
         });
         res.json(comments);
     }
@@ -32,13 +36,14 @@ const getComments = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.getComments = getComments;
 //Create a Comment for a Task with Task Author User
 const createComment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { text, taskId, userId, } = req.body;
+    const { text, taskId, bugId, authorUserId, } = req.body;
     try {
         const newComment = yield prisma.comment.create({
             data: {
                 text,
                 taskId,
-                userId,
+                bugId,
+                authorUserId,
             },
         });
         res.status(201).json(newComment);
@@ -52,31 +57,33 @@ const createComment = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 exports.createComment = createComment;
 //Get One Comment
 const getOneComment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
     const { commentId } = req.params;
     try {
         const comment = yield prisma.comment.findUnique({
             where: {
                 id: Number(commentId)
             },
-            include: {
-                user: {
-                    select: {
-                        username: true, // Only select the username
-                    },
-                },
-            },
+            // include: {
+            //   user: { // Include the associated user data
+            //     select: {
+            //       username: true, // Only select the username
+            //       firstName: true,
+            //       lastName: true,
+            //     },
+            //   },
+            // },
         });
         if (!comment) {
             res.status(404).json({ message: "Comment not found" });
             return;
         }
         // You can now access comment.user.username
-        res.json({
-            id: comment.id,
-            text: comment.text,
-            username: (_a = comment.user) === null || _a === void 0 ? void 0 : _a.username, // Access username from the user relation
-        });
+        // res.json({
+        //   id: comment.id,
+        // text: comment.text,
+        // username: comment.user?.username, // Access username from the user relation
+        // });
+        res.json(comment);
     }
     catch (error) {
         res
