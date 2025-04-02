@@ -17,15 +17,20 @@ model User {
   userId            Int     @id @default(autoincrement())
   cognitoId         String  @unique
   username          String  @unique
+  firstName         String
+  lastName          String
   profilePictureUrl String?
   teamId            Int?
 
-  authoredTasks   Task[]           @relation("TaskAuthor")
-  assignedTasks   Task[]           @relation("TaskAssignee")
-  taskAssignments TaskAssignment[]
-  attachments     Attachment[]
-  comments        Comment[]
-  team            Team?            @relation(fields: [teamId], references: [id])
+  authoredTasks     Task[]           @relation("TaskAuthor")
+  assignedTasks     Task[]           @relation("TaskAssignee")
+  taskAssignments   TaskAssignment[]
+  authoredBugs      Bug[]            @relation("BugAuthor")
+  assignedBugs      Bug[]            @relation("BugAssignee")
+  bugAssignments    BugAssignment[]
+  attachments       Attachment[]
+  comments          Comment[]
+  team              Team?            @relation(fields: [teamId], references: [id])
 }
 
 model Team {
@@ -44,6 +49,7 @@ model Project {
   startDate    DateTime?
   endDate      DateTime?
   tasks        Task[]
+  bugs         Bug[]
   projectTeams ProjectTeam[]
 }
 
@@ -86,23 +92,60 @@ model TaskAssignment {
   task Task @relation(fields: [taskId], references: [id])
 }
 
+model Bug {
+  id             Int       @id @default(autoincrement())
+  title          String
+  description    String?
+  status         String?
+  priority       String?
+  tags           String?
+  startDate      DateTime?
+  dueDate        DateTime?
+  points         Int?
+  projectId      Int
+  authorUserId   Int
+  assignedUserId Int?
+
+  project         Project          @relation(fields: [projectId], references: [id])
+  author          User             @relation("BugAuthor", fields: [authorUserId], references: [userId])
+  assignee        User?            @relation("BugAssignee", fields: [assignedUserId], references: [userId])
+  bugAssignments  BugAssignment[]
+  attachments     Attachment[]
+  comments        Comment[]
+}
+
+model BugAssignment {
+  id      Int @id @default(autoincrement())
+  userId  Int
+  bugId   Int
+
+  user    User @relation(fields: [userId], references: [userId])
+  bug     Bug @relation(fields: [bugId], references: [id])
+}
+
+
 model Attachment {
   id           Int     @id @default(autoincrement())
   fileURL      String
   fileName     String?
   taskId       Int
+  bugId        Int
   uploadedById Int
 
   task       Task @relation(fields: [taskId], references: [id])
+  bug        Bug @relation(fields: [bugId], references: [id])
   uploadedBy User @relation(fields: [uploadedById], references: [userId])
 }
 
 model Comment {
-  id     Int    @id @default(autoincrement())
-  text   String
-  taskId Int
-  userId Int
+  id                  Int         @id @default(autoincrement())
+  text                String
+  taskId              Int
+  userId              Int
+  bugId               Int
+  createdAt           DateTime    @default(now())
 
-  task Task @relation(fields: [taskId], references: [id])
-  user User @relation(fields: [userId], references: [userId])
+  task                Task        @relation(fields: [taskId], references: [id])
+  bug                 Bug         @relation(fields: [bugId], references: [id])
+  user                User        @relation(fields: [userId], references: [userId])
 }

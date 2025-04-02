@@ -1,0 +1,11 @@
+[
+    { "id": 1, "userId": 1, "bugId": 1 },
+    { "id": 2, "userId": 2, "bugId": 2 },
+    { "id": 3, "userId": 3, "bugId": 3 },
+    { "id": 4, "userId": 4, "bugId": 4 },
+    { "id": 5, "userId": 5, "bugId": 5 },
+    { "id": 6, "userId": 5, "bugId": 1 },
+    { "id": 7, "userId": 4, "bugId": 2 },
+    { "id": 8, "userId": 1, "bugId": 3 },
+    { "id": 9, "userId": 3, "bugId": 4 }
+]

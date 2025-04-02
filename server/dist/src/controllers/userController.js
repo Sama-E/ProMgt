@@ -43,10 +43,12 @@ const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.getUser = getUser;
 const postUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { username, cognitoId, profilePictureUrl = "i1.jpg", teamId = 1, } = req.body;
+        const { username, cognitoId, firstName, lastName, profilePictureUrl = "i1.jpg", teamId = 1, } = req.body;
         const newUser = yield prisma.user.create({
             data: {
                 username,
+                firstName,
+                lastName,
                 cognitoId,
                 profilePictureUrl,
                 teamId,
