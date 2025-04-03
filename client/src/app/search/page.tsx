@@ -7,6 +7,7 @@ import { useSearchQuery } from '@/state/api';
 import Header from '@/components/Header';
 import ProjectCard from '@/components/ProjectCard';
 import TaskCardAlt from '@/components/TaskCardAlt';
+import BugCardAlt from '@/components/BugCardAlt';
 
 const Search = () => {
     const [searchTerm, setSearchTerm] = useState("");
@@ -56,7 +57,7 @@ const Search = () => {
                 <h2>Bugs</h2>
             )}
             {searchResults.bugs?.map((bug) => (
-                <TaskCardAlt key={bug.id} task={bug} />
+                <BugCardAlt key={bug.id} bug={bug} />
             ))}
 
             {searchResults.projects && searchResults.projects?.length > 0 && (

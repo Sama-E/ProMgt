@@ -23,6 +23,14 @@ const search = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 ],
             },
         });
+        const bugs = yield prisma.bug.findMany({
+            where: {
+                OR: [
+                    { title: { contains: query } },
+                    { description: { contains: query } },
+                ],
+            },
+        });
         const projects = yield prisma.project.findMany({
             where: {
                 OR: [
@@ -36,7 +44,7 @@ const search = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 OR: [{ username: { contains: query } }],
             },
         });
-        res.json({ tasks, projects, users });
+        res.json({ tasks, bugs, projects, users });
     }
     catch (error) {
         res
