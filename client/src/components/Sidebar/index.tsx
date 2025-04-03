@@ -29,6 +29,7 @@ import React, { useState } from 'react'
 const Sidebar = () => {
     const [showProjects, setShowProjects] = useState(true);
     const [showPriority, setShowPriority] = useState(true)
+    const [showBugs, setShowBugs] = useState(true)
 
     //Get sample data
     const { data: projects } = useGetProjectsQuery();
@@ -159,6 +160,44 @@ const Sidebar = () => {
                     icon={Layers3}
                     label="Backlog"
                     href="/priority/backlog"
+                    />
+                </>
+                )}
+
+                {/* Bugs List */}
+                <button
+                    onClick={() => setShowBugs((prev) => !prev)}
+                    className="flex w-full items-center justify-between px-8 py-3 text-gray-500"
+                    >
+                    <span className="">Bugs</span>
+                    {showBugs ? (
+                        <ChevronUp className="h-5 w-5" />
+                    ) : (
+                        <ChevronDown className="h-5 w-5" />
+                    )}
+                </button>
+                {showBugs && (
+                <>
+                    <SidebarLink
+                    icon={AlertCircle}
+                    label="Urgent"
+                    href="/bugs/urgent"
+                    />
+                    <SidebarLink
+                    icon={ShieldAlert}
+                    label="High"
+                    href="/bugs/high"
+                    />
+                    <SidebarLink
+                    icon={AlertTriangle}
+                    label="Medium"
+                    href="/bugs/medium"
+                    />
+                    <SidebarLink icon={AlertOctagon} label="Low" href="/bugs/low" />
+                    <SidebarLink
+                    icon={Layers3}
+                    label="Backlog"
+                    href="/bugs/backlog"
                     />
                 </>
                 )}

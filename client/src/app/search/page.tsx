@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react'
 import { debounce } from 'lodash';
 
 import { useSearchQuery } from '@/state/api';
-import TaskCard from '@/components/TaskCard';
 import Header from '@/components/Header';
 import ProjectCard from '@/components/ProjectCard';
 import TaskCardAlt from '@/components/TaskCardAlt';
@@ -51,6 +50,13 @@ const Search = () => {
             )}
             {searchResults.tasks?.map((task) => (
                 <TaskCardAlt key={task.id} task={task} />
+            ))}
+            
+            {searchResults.bugs && searchResults.bugs?.length > 0 && (
+                <h2>Bugs</h2>
+            )}
+            {searchResults.bugs?.map((bug) => (
+                <TaskCardAlt key={bug.id} task={bug} />
             ))}
 
             {searchResults.projects && searchResults.projects?.length > 0 && (

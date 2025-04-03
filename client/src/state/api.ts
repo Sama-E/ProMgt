@@ -29,6 +29,26 @@ export interface Task {
     attachments?: Attachment[];
 }
 
+export interface Bug {
+    id: number;
+    title: string;
+    description?: string;
+    status?: Status;
+    priority?: Priority;
+    tags?: string;
+    startDate?: string;
+    dueDate?: string;
+    points?: number;
+    projectId: number;
+    authorUserId?: number;
+    assignedUserId?: number;
+  
+    author?: User;
+    assignee?: User;
+    comments?: Comment[];
+    attachments?: Attachment[];
+}
+
 export enum Status {
     ToDo = "To Do",
     WorkInProgress = "Work In Progress",
@@ -49,6 +69,7 @@ export interface Attachment {
     fileURL: string;
     fileName: string;
     taskId: number;
+    bugId: number;
     uploadedById: number;
 }
 
@@ -70,6 +91,7 @@ export interface Team {
 
 export interface SearchResults {
     tasks?: Task[];
+    bugs?: Bug[];
     projects?: Project[];
     users?: User[];
 }
@@ -87,7 +109,7 @@ export const api = createApi({
         //   },
     }),
     reducerPath: "api",
-    tagTypes: ["Projects", "Tasks", "Users", "Teams"],
+    tagTypes: ["Projects", "Tasks", "Bugs", "Users", "Teams"],
     endpoints: (build) => ({
         
         //PROJECTS
@@ -155,6 +177,55 @@ export const api = createApi({
             ],
         }),
 
+        //BUGS
+        //Get All Bugs - Array
+        getBugs: build.query<Bug[], { projectId: number }>({
+            query: ({ projectId }) => `bugs?projectId=${projectId}`,
+            providesTags: (result) =>
+              result
+                ? result.map(({ id }) => ({ type: "Bugs" as const, id }))
+                : [{ type: "Bugs" as const }],
+        }),
+        //Get Bug by User - Array
+        getBugsByUser: build.query<Bug[], number>({
+            query: (userId) => `bugs/user/${userId}`,
+            providesTags: (result, error, userId) =>
+                result
+                ? result.map(({ id }) => ({ type: "Bugs", id }))
+                : [{ type: "Bugs", id: userId }],
+        }),
+        //Create Bug
+        createBug: build.mutation<Bug, Partial<Bug>>({
+            query: (bug) => ({
+                url: "bugs",
+                method: "POST",
+                body: bug,
+            }),
+            invalidatesTags: ["Bugs"],
+        }),
+        //Update Bug Status
+        updateBugStatus: build.mutation<Bug, { bugId: number; status: string }>({
+            query: ({ bugId, status }) => ({
+                url: `bugs/${bugId}/status`,
+                method: "PATCH",
+                body: { status },
+            }),
+            invalidatesTags: (result, error, { bugId }) => [
+                { type: "Bugs", id: bugId },
+            ],
+        }),
+        //Update Bug Priority
+        updateBugPriority: build.mutation<Bug, { bugId: number; priority: string }>({
+            query: ({ bugId, priority }) => ({
+                url: `bugs/${bugId}/priority`,
+                method: "PATCH",
+                body: { priority },
+            }),
+            invalidatesTags: (result, error, { bugId }) => [
+                { type: "Bugs", id: bugId },
+            ],
+        }),
+
         //USERS
         //Get Users - Array
         getUsers: build.query<User[], void>({
@@ -203,9 +274,14 @@ export const {
     useCreateTaskMutation,
     useUpdateTaskStatusMutation,
     useUpdateTaskPriorityMutation,
+    useGetBugsQuery,
+    useCreateBugMutation,
+    useUpdateBugStatusMutation,
+    useUpdateBugPriorityMutation,
     useSearchQuery,
     useGetUsersQuery,
     useGetTeamsQuery,
     useGetTasksByUserQuery,
+    useGetBugsByUserQuery,
     // useGetAuthUserQuery,
   } = api;
