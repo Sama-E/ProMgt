@@ -40,7 +40,6 @@ const Timeline = ({ id, setIsModalNewTaskOpen }: Props) => {
       })) || []
     );
   }, [tasks]);
-  // console.log(tasks)
 
   const handleViewModeChange = (
     event: React.ChangeEvent<HTMLSelectElement>,

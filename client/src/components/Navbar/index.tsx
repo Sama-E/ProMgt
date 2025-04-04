@@ -34,7 +34,7 @@ const Navbar = () => {
                     />
                 </div>
                 <div className="text-xl font-bold text-gray-800 dark:text-white">
-                    NHazi
+                    PROYECTO
                 </div>
 
             </div>

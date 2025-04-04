@@ -33,7 +33,7 @@ const ProjectHeader = ({ activeTab, setActiveTab }: Props) => {
       <div className="pb-6 pt-6 lg:pb-4 lg:pt-8">
         {/* HEADER */}
         <Header
-          name="Product Design Development"
+          name="Project Development"
           buttonComponent={
             <button
               className="flex items-center rounded-md bg-blue-primary px-3 py-2 text-white hover:bg-blue-600"
