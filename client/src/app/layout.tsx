@@ -6,8 +6,8 @@ import DashboardWrapper from "./DashboardWrapper";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "ProjectList",
-  description: "Imagine. List. Build.",
+  title: "Proyecto",
+  description: "Imagine. Develop. Debug. Build.",
 };
 
 export default function RootLayout({

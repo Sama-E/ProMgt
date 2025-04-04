@@ -128,24 +128,24 @@ model Attachment {
   id           Int     @id @default(autoincrement())
   fileURL      String
   fileName     String?
-  taskId       Int
-  bugId        Int
+  taskId       Int?
+  bugId        Int?
   uploadedById Int
 
-  task       Task @relation(fields: [taskId], references: [id])
-  bug        Bug @relation(fields: [bugId], references: [id])
-  uploadedBy User @relation(fields: [uploadedById], references: [userId])
+  task       Task?     @relation(fields: [taskId], references: [id])
+  bug        Bug?      @relation(fields: [bugId], references: [id])
+  uploadedBy User     @relation(fields: [uploadedById], references: [userId])
 }
 
 model Comment {
   id                  Int         @id @default(autoincrement())
   text                String
-  taskId              Int
+  taskId              Int?
   userId              Int
-  bugId               Int
+  bugId               Int?
   createdAt           DateTime    @default(now())
 
-  task                Task        @relation(fields: [taskId], references: [id])
-  bug                 Bug         @relation(fields: [bugId], references: [id])
+  task                Task?        @relation(fields: [taskId], references: [id])
+  bug                 Bug?         @relation(fields: [bugId], references: [id])
   user                User        @relation(fields: [userId], references: [userId])
 }
