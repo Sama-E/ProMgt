@@ -9,6 +9,7 @@ type Props = {
 };
 
 const TaskCard = ({ task }: Props) => {
+
   return (
     <div className="m-3 rounded bg-white p-4 shadow dark:bg-dark-secondary dark:text-white">
       {task.attachments && task.attachments.length > 0 && (
@@ -63,6 +64,7 @@ const TaskCard = ({ task }: Props) => {
         <strong>Assignee:</strong>{" "}
         {task.assignee ? `${task.assignee.firstName} ${task.assignee.lastName}` : "Unassigned"}
       </p>
+
     </div>
   );
 };

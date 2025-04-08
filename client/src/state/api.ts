@@ -89,6 +89,17 @@ export interface Team {
     projectManagerUserId?: number;
 }
 
+export interface Comment {
+    id: number;
+    text: string;
+    taskId?: number;
+    bugId?: number;
+    userId: number;
+    createdAt: string;
+
+    author?: User;
+}
+
 export interface SearchResults {
     tasks?: Task[];
     bugs?: Bug[];
@@ -109,7 +120,7 @@ export const api = createApi({
         //   },
     }),
     reducerPath: "api",
-    tagTypes: ["Projects", "Tasks", "Bugs", "Users", "Teams"],
+    tagTypes: ["Projects", "Tasks", "Bugs", "Comments", "Users", "Teams"],
     endpoints: (build) => ({
         
         //PROJECTS
@@ -226,6 +237,30 @@ export const api = createApi({
             ],
         }),
 
+        //COMMENTS
+        //Create Comment
+        createComment: build.mutation<Comment, Partial<Comment>>({
+            query: (comment) => ({
+                url: "comments",
+                method: "POST",
+                body: comment,
+            }),
+            invalidatesTags: ["Comments"],
+        }),
+        //Get Comments for One Task
+        getCommentsForTask: build.query<Comment[], { taskId: number }>({
+            query: ({ taskId }) => `tasks/${taskId}/comments`,  // Endpoint to fetch comments for a specific task
+            providesTags: (result, error, { taskId }) => 
+                result ? [{ type: 'Comments', id: taskId }] : [], // Cache comments by taskId
+            }),
+
+        //Get Comments for One Bug
+        getCommentsForBug: build.query<Comment[], { bugId: number }>({
+            query: ({ bugId }) => `tasks/${bugId}/comments`,  // Endpoint to fetch comments for a specific bug
+            providesTags: (result, error, { bugId }) => 
+                result ? [{ type: 'Comments', id: bugId }] : [], // Cache comments by bugId
+            }),
+
         //USERS
         //Get Users - Array
         getUsers: build.query<User[], void>({
@@ -283,5 +318,8 @@ export const {
     useGetTeamsQuery,
     useGetTasksByUserQuery,
     useGetBugsByUserQuery,
+    useGetCommentsForTaskQuery,
+    useGetCommentsForBugQuery,
+    useCreateCommentMutation,
     // useGetAuthUserQuery,
   } = api;

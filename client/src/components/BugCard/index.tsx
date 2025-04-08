@@ -3,12 +3,15 @@ import Image from "next/image";
 
 import { Bug } from "@/state/api";
 import { format } from "date-fns";
+import CommentCard from "../CommentCard";
 
 type Props = {
   bug: Bug;
 };
 
 const BugCard = ({ bug }: Props) => {
+  const comments = bug.comments
+
   return (
     <div className="m-3 rounded bg-white p-4 shadow dark:bg-dark-secondary dark:text-white">
       {bug.attachments && bug.attachments.length > 0 && (
@@ -63,6 +66,11 @@ const BugCard = ({ bug }: Props) => {
         <strong>Assignee:</strong>{" "}
         {bug.assignee ? `${bug.assignee.firstName} ${bug.assignee.lastName}` : "Unassigned"}
       </p>
+      <section className="rounded-lg border-1 border-gray-600 my-4 w-full">
+          <ul role="list" className="grid grid-cols-1 gap-4 divide-y divide-gray-200">
+            {/* {comments?.map((comment: Comment) => <CommentCard key={comment.id} comment={comment} />)} */}
+          </ul>
+        </section>
     </div>
   );
 };

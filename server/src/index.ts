@@ -12,6 +12,7 @@ import bugRoutes from "./routes/bugRoutes";
 import searchRoutes from "./routes/searchRoutes";
 import userRoutes from "./routes/userRoutes";
 import teamRoutes from "./routes/teamRoutes";
+import commentRoutes from "./routes/commentRoutes";
 
 /* CONFIGURATIONS */
 dotenv.config();
@@ -35,6 +36,7 @@ app.use("/bugs", bugRoutes);
 app.use("/search", searchRoutes);
 app.use("/users", userRoutes);
 app.use("/teams", teamRoutes);
+app.use("/comments", commentRoutes);
 
 /* SERVER */
 //const port = Number(process.env.PORT) || 3000;

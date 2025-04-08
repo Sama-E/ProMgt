@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import { format } from 'date-fns';
 
 import { useAppSelector } from '@/app/redux';
-import { Priority, Task, useGetTasksByUserQuery } from '@/state/api';
+import { Priority, Task, useGetOneTaskQuery, useGetTasksByUserQuery } from '@/state/api';
 import ModalNewTask from '@/components/ModalNewTask';
 import Header from '@/components/Header';
 import TaskCard from '@/components/TaskCard';
@@ -98,6 +98,7 @@ const PriorityPage = ({priority}: Props) => {
 
   if (isTasksError || !tasks) return <div>Error fetching tasks</div>;
 
+
   return (
     <div className="m-5 p-4">
       <ModalNewTask
@@ -105,7 +106,7 @@ const PriorityPage = ({priority}: Props) => {
         onClose={() => setIsModalNewTaskOpen(false)}
       />
       <Header
-        name="Priority Page"
+        name="Tasks"
         buttonComponent={
           <button
             className="mr-3 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"

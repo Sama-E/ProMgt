@@ -105,7 +105,7 @@ const BugPriorityPage = ({priority}: Props) => {
         onClose={() => setIsModalNewBugOpen(false)}
       />
       <Header
-        name="Priority Page"
+        name="Bugs"
         buttonComponent={
           <button
             className="mr-3 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
